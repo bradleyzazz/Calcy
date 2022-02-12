@@ -13,7 +13,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "fstart": "npm run fbuild && node server/index.js",
+    "fstart": "npm run fbuild && nodemon server/index.js",
     "fbuild": "npm install && npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",
