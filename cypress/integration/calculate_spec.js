@@ -5,6 +5,7 @@ describe("calculate", () => {
 
         // enter first number
         cy.findByRole('button', { name: /6/i}).click();
+        
         // choose operator
         cy.findByRole('button', { name: /\+/i}).click();
 
@@ -15,13 +16,10 @@ describe("calculate", () => {
         cy.findByRole('button', {  name: /=/i}).click();
 
         // see result
-        // cy.findByText('13').should('be.visible')
-        // container.querySelector('#input')
         cy.get('#input').should(
             "have.text",
             "13"
           );
-        // container.querySelector('#root > div > div:nth-child(1)')
     })
 
     it('can subtract two numbers (9 and 4)', () => {
