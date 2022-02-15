@@ -54,6 +54,7 @@ Node js could introduce `clustering`,  which would allow the app to run on multi
 
 My hosted app on a T2.micro only has one core, and only 1 gb of memory.  Using clusters would not help here. Also expanding nodejs memory limit (which defaults around 1gb) is also not viable in this situation.  But on a much more powerful machine this would be a good option. 
 
+I also did some load testing using loader.io. This allowed me to test the hosted server on AWS under some load. This can be seen in the server folder and serve/index.js. 
 
 ## Saving/Caching Results 
 
