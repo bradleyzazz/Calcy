@@ -8,10 +8,6 @@ function Calculator() {
     const [currNum, setCurrNum] = useState("0");
     const [operator, setOperator] = useState(null);
 
-    useEffect(() => {
-        console.log("hey")
-    }, [prevNum, currNum, operator]);
-
     const Operators = {
         "/": 'divide',
         "*": 'multiply',
