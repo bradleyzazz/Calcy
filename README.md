@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# Calcy - A Basic Calculator App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+Calcy can add, subtract, multilpy, and divide numbers
 
-In the project directory, you can run:
+### `Visit app online`
 
-### `npm start`
+Currently the app is hosted via AWS on an EC2 t2.micro instance (cus it's free) and can be reached at `http://ec2-54-151-50-156.us-west-1.compute.amazonaws.com:3001/`. It's exposed on port 3001 so make sure to include that at the end of the ip address. If exposed at port 80 it would not be needed. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `Build and run app locally`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Clone repo to local machine. CD into /calcy. Install npm if havnt already. Run `npm run fbuild`. Navigate to localhost:3001 in browser.
 
-### `npm test`
+### `Run the tests`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run `npm run tests'`.  I created some basic unit tests using react-testing-library / jest on a couple of the components because tests are important. Given more time, I would strive for 100% coverage in my test suite.
 
-### `npm run build`
+## API Design
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This specific app uses only `GET` requests to calculate operations on the server and return the results. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+GET /:operator/:num1/:num2
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The `:operator` options include `add`, `subtract`, `multiply`, and `divide`
 
-### `npm run eject`
+The response will be a JSON object containing a number
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Example request and response
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+/multiply/6/5
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`Status: 200 OK`
+```
+{
+   30
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Handling Load and Scaling
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+For this app the client and server are both running on the same machine.  Ideally, the Express.js (node) Server would be running on a seperate machine, making it easy to horizontally/vertically scale.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Using a load balancer to disperse requests to multiple instances of the server is a great option. 
 
-### Code Splitting
+Node js could introduce `clustering`,  which would allow the app to run on multiple cores (if the machine has them).  Nodejs is single threaded by defualt.  Allowing clustering could run requests on multiple cores, generally in a round-robin fashion, dispersing load.  Using pm2 package is also another option that does this with just a couple lines of code. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+My hosted app on a T2.micro only has one core, and only 1 gb of memory.  Using clusters would not help here. Also expanding nodejs memory limit (which defaults around 1gb) is also not viable in this situation.  But on a much more powerful machine this would be a good option. 
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Saving/Caching Results 
 
-### Making a Progressive Web App
+Although the operations happening on the server are not super intensive in this particular app (just adding, multiplying, subtracting, dividing 2 numbers),  a cache could come in handy.  Something like NGINX could be great for reducing load on the server.  Time to live would not be that great of a factor, as these math operations never change results.  5 x 5 will always be 25. Always.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+An LRU could be handy here to limit the size of the cache.  Some operations over time, would probably end up being much more frequent than others, and keeoing them in the cache would be a great strategy.
 
-### Advanced Configuration
+Saving past calculations/results locally could be nice.  The 10 most recent results could be stored in a table below the calculator.  This could be implemented in several ways, like storing them locally with various methods, or storing them in a database to be accessed whenever logging back into the app in the case of users and accounts. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

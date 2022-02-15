@@ -1,0 +1,12 @@
+.calculator-input {
+    height: 7rem;
+    text-align: right;
+    padding-right: 10%;
+    font-weight: bold;
+    font-size: xx-large;
+  }
+
+  .result {
+    min-height: 3rem;
+    color: white;
+  }

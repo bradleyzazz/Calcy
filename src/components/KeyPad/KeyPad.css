@@ -6,14 +6,6 @@
     grid-template-areas: "keys-function keys-function keys-function keys-operators" "keys-numbers keys-numbers keys-numbers keys-operators" "keys-numbers keys-numbers keys-numbers keys-operators" "keys-numbers keys-numbers keys-numbers keys-operators" "keys-numbers keys-numbers keys-numbers keys-operators";
   }
   
-  .calculator-input {
-    height: 7rem;
-    text-align: right;
-    padding-right: 10%;
-    font-weight: bold;
-    font-size: xx-large;
-  }
-  
   .keys-numbers {
     grid-area: keys-numbers;
     direction: rtl;
@@ -34,9 +26,4 @@
   .keys-function {
     grid-area: keys-function;
     background-color: #6C6B69;
-  }
-  
-  .result {
-    min-height: 3rem;
-    color: white;
   }

@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
-import KeyPad from "./KeyPad.js";
+import KeyPad from "../KeyPad/KeyPad.js";
+import InputBox from "../InputBox/InputBox.js";
 import "./Calculator.css";
-// import { add, divide, multiply, subtract } from '../../server/controller.js';
 
 function Calculator() {
     const [prevNum, setPrevNum] = useState(null);
     const [currNum, setCurrNum] = useState("0");
     const [operator, setOperator] = useState(null);
 
-    // useEffect(() => { }, [operator, currNum, prevNum]);
+    useEffect(() => {
+        console.log("hey")
+    }, [prevNum, currNum, operator]);
 
     const Operators = {
         "/": 'divide',
@@ -16,21 +18,19 @@ function Calculator() {
         "+": 'add',
         "-": 'subtract',
         "=": 'equals'
-    }
+    };
 
-    async function performOperation() { 
+    async function performOperation() {
         const action = Operators[operator];
-        console.log(action)
         const response = await fetch(`/${action}/${prevNum}/${currNum}`);
         const data = await response.json()
-        console.log(data)
         setOperator(null);
         setCurrNum(data);
         setPrevNum(null);
-    }
+    };
 
     const handleNum = (number) => {
-        setCurrNum(currNum === "0" ? String(number) : currNum + number);
+        setCurrNum(currNum === "0" ? number : currNum + number);
     };
 
     const insertDecimal = () => {
@@ -82,10 +82,8 @@ function Calculator() {
 
     return (
         <div className="calculator">
-            <div className="calculator-input">
-                <div className="result">{currNum} </div>
-            </div>
-            < KeyPad handleClick={handleInput}/>
+            <InputBox currNum={currNum} />
+            <KeyPad handleClick={handleInput} />
         </div>
     );
 }

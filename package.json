@@ -39,6 +39,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/cypress": "^8.0.2",
+    "cypress": "latest",
+    "jest-watch-typeahead": "^0.6.5",
     "nodemon": "^2.0.15"
   },
   "proxy": "http://localhost:3001"
