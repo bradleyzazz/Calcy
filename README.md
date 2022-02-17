@@ -2,7 +2,7 @@
 
 ## Overview
 
-Calcy is a basic calculator app built in React with a Nodejs (Expressjs) server. It can add, subtract, multilpy, and divide numbers, along with the percentagee and change sign functions.
+Calcy is a basic calculator app built in React with a Nodejs (Expressjs) server. It can add, subtract, multilpy, and divide numbers, along with the percentage and change sign functions.  It also displays the 5 most recent calculations.
 
 ### `Visit app online`
 
@@ -58,9 +58,13 @@ I also did some load testing using loader.io. This allowed me to test the hosted
 
 ## Saving/Caching Results 
 
-Although the operations happening on the server are not super intensive in this particular app (just adding, multiplying, subtracting, dividing 2 numbers), a cache could come in handy.  Something like an NGINX cache could be great for reducing load on the server.  Time to live would not be that great of a factor, as these math operations never change results.  5 x 5 will always be 25. Always.
+As a quick after-thought, I included the 5 Most Recent calculations to update as calcs come in.  A potential better solution would be to store them in local storage, which would persist throughout browser sessions (making sure to clean up occasionally to avoid memory strain).
 
-An LRU could be handy here to limit the size of the cache.  Some operations over time would probably end up being much more frequent than others, and keeping them in a cache could be a great strategy.
+If a user had an account with our application, storing them in a database to be accessed whenever a user logs back into the app would be cool. 
 
-Saving past calculations/results locally could be nice.  The 10 most recent results could be stored in a table below the calculator.  This could be implemented in several ways, like storing them locally with various methods, or storing them in a database to be accessed whenever a user logs back into the app. 
+
+Although the operations happening on the server are not super intensive in this particular app (just adding, multiplying, subtracting, dividing 2 numbers), a cache could be a great option.  Something like an NGINX cache could be great for reducing load on the server.  Time to live would not be that great of a factor, as these math operations never change results.  5 x 5 will always be 25. Always.
+
+An LRU could be handy here to limit the size of the cache.  Some operations over time would probably end up being much more frequent than others, and keeping track of them could be a strategy.
+
 

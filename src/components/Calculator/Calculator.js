@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import KeyPad from "../KeyPad/KeyPad.js";
 import InputBox from "../InputBox/InputBox.js";
+import FiveMostRecent from "../FiveMostRecent/FiveMostRecent.js";
 import "./Calculator.css";
 
 function Calculator() {
     const [prevNum, setPrevNum] = useState(null);
     const [currNum, setCurrNum] = useState("0");
     const [operator, setOperator] = useState(null);
+    const [mostRecent, setMostRecent] = useState([]);
 
     const Operators = {
         "/": 'divide',
@@ -20,10 +22,18 @@ function Calculator() {
         const action = Operators[operator];
         const response = await fetch(`/${action}/${prevNum}/${currNum}`);
         const data = await response.json()
+        addToMostRecent(data);
         setOperator(null);
         setCurrNum(data);
         setPrevNum(null);
     };
+
+    const addToMostRecent = (data) => {
+        setMostRecent(prevList => { 
+            if (prevList.length > 4) prevList = prevList.slice(0, prevList.length - 1)
+            return [`${prevNum} ${operator} ${currNum} = ${data}`, ...prevList]
+          })
+    }
 
     const handleNum = (number) => {
         setCurrNum(currNum === "0" ? number : currNum + number);
@@ -77,9 +87,14 @@ function Calculator() {
     };
 
     return (
-        <div className="calculator">
-            <InputBox currNum={currNum} />
-            <KeyPad handleClick={handleInput} />
+        <div>
+            <div className="calculator">
+                <InputBox currNum={currNum} />
+                <KeyPad handleClick={handleInput} />
+            </div>
+            <div>
+                <FiveMostRecent mostRecent={mostRecent} />
+            </div>
         </div>
     );
 }
