@@ -1,5 +1,3 @@
-import "./FiveMostRecent.css";
-
 function FiveMostRecent({mostRecent}) {
     return (
         <div>
