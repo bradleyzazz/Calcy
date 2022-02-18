@@ -20,18 +20,24 @@ function Calculator() {
 
     async function performOperation() {
         const action = Operators[operator];
-        const response = await fetch(`/${action}/${prevNum}/${currNum}`);
-        const data = await response.json()
-        addToMostRecent(data);
-        setOperator(null);
-        setCurrNum(data);
-        setPrevNum(null);
+
+        try {
+            const response = await fetch(`/${action}/${prevNum}/${currNum}`);
+            const data = await response.json();
+            setCurrNum(data);
+            addToMostRecent(data)
+        } catch (error) {
+            console.log("Math calculation was unsuccesful. Here is the error:", error);
+        } finally {
+            setOperator(null);
+            setPrevNum(null);
+        }
     };
 
     const addToMostRecent = (data) => {
         setMostRecent(prevList => { 
-            if (prevList.length > 4) prevList = prevList.slice(0, prevList.length - 1)
-            return [`${prevNum} ${operator} ${currNum} = ${data}`, ...prevList]
+            if (prevList.length > 4) prevList = prevList.slice(0, prevList.length - 1);
+            return [`${prevNum} ${operator} ${currNum} = ${data}`, ...prevList];
           })
     }
 
