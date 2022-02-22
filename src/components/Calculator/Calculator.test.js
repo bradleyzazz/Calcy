@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import Calculator from './Calculator.js';
 
-
-it('should add two numbers', () => {
+it('should render calculator', () => {
     render(<Calculator />);
+    // come back to this...
 });
 

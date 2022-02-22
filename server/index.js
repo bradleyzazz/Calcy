@@ -15,6 +15,8 @@ app.get('/loaderio-7210d1ceb4ffb6c7c4cd1b09f153b9da.txt', (req, res) => {
     res.sendFile(`${__dirname}/loaderio-7210d1ceb4ffb6c7c4cd1b09f153b9da.txt`)
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Calculator app listening on port ${port}`)
 })
+
+module.exports = server;
